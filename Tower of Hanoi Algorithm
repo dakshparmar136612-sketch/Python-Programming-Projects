@@ -1,0 +1,35 @@
+
+def hanoi_solver(n):
+    towers = {
+        "A": [disk for disk in range(n, 0, -1)],
+        "B": [],
+        "C": []
+    }
+
+    steps = []
+
+    def save_step():
+        current_state = (
+            f"{towers['A']} {towers['B']} {towers['C']}"
+        )
+        steps.append(current_state)
+
+    def solve(count, start, end, helper):
+        if count == 1:
+            disk = towers[start].pop()
+            towers[end].append(disk)
+            save_step()
+            return
+
+        solve(count - 1, start, helper, end)
+
+        disk = towers[start].pop()
+        towers[end].append(disk)
+        save_step()
+
+        solve(count - 1, helper, end, start)
+
+    save_step()
+    solve(n, "A", "C", "B")
+
+    return "\n".join(steps)
