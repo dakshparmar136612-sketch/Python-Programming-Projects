@@ -1,0 +1,36 @@
+
+class HashTable:
+    def __init__(self):
+        self.data = {}
+
+    def hash(self, key):
+        hash_value = 0
+        for character in key:
+            hash_value += ord(character)
+        return hash_value
+
+    def add(self, key, value):
+        index = self.hash(key)
+
+        if index not in self.data:
+            self.data[index] = {}
+
+        self.data[index].update({key: value})
+
+    def remove(self, key):
+        index = self.hash(key)
+
+        bucket = self.data.get(index)
+
+        if bucket is not None and key in bucket:
+            bucket.pop(key)
+
+            if len(bucket) == 0:
+                self.data.pop(index)
+
+    def lookup(self, key):
+        index = self.hash(key)
+
+        bucket = self.data.get(index, {})
+
+        return bucket.get(key, None)
